@@ -156,6 +156,8 @@ struct xsc_spinlock {
 #define XSC_MV_HOST_VF_DEV_ID		0x1152
 #define XSC_MV_SOC_PF_DEV_ID		0x1153
 
+#define XSC_MULTI_SQ_DB_STEP	16
+
 enum {
 	RDMA_PROTO_ROCEV2,
 	RDMA_PROTO_VEROCE,
@@ -585,5 +587,11 @@ static inline void *xsc_get_send_wqe(struct xsc_qp *qp, int n)
 {
 	return qp->sq_start + (n << qp->sq.wqe_shift);
 }
+
+int xsc_set_ece(struct ibv_qp *qp, struct ibv_ece *ece);
+int xsc_query_ece(struct ibv_qp *qp, struct ibv_ece *ece);
+int xsc_post_send_mask_atomic(struct ibv_qp *ibqp,
+			struct xscdv_exp_send_wr *wr,
+			struct xscdv_exp_send_wr **bad_wr);
 
 #endif /* XSC_H */
